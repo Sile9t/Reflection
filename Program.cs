@@ -12,8 +12,12 @@ namespace Reflection
         {
             _name = name;
         }
+        public string GetName()
+        {
+            return _name;
+        }
     }
-    class TargetClass
+    public class TargetClass
     {
         public int _i { get; set; }
         public string _s { get; set; }
@@ -36,25 +40,72 @@ namespace Reflection
             Type t = o.GetType();
             sb.Append($"{t.AssemblyQualifiedName} : ");
             sb.Append($"{t.Name} | ");
-            var props = t.GetProperties();
+            //get all properties by setting flags for public and nonpublic instances
+            var props = t.GetProperties(BindingFlags.Public | BindingFlags
+                .NonPublic | BindingFlags.Instance);
             foreach( var prop in props )
             {
                 if (prop.GetCustomAttribute<CustomNameAttribute>() != null)
                 {
-
+                    string propCustomName = prop
+                        .GetCustomAttribute<CustomNameAttribute>()!
+                        .GetName();
+                    sb.Append($"{propCustomName} : ");
                 }
-                sb.Append($"{prop.Name} : ");
-                if (prop.IsCollectible)
+                else sb.Append($"{prop.Name} : ");
+                sb.Append($"{prop.GetValue(o)} ");
+                if (prop.PropertyType.IsArray)
                 {
-                    sb.Append(new String(prop.GetValue(0) as char[]));
+                    sb.Append("{ ");
+                    IEnumerable items = (IEnumerable)prop.GetValue(o, null)!;
+                    foreach (var item in items)
+                        sb.Append($"'{item}' ");
+                    sb.Append("}");
                 }
-                else sb.Append($"{prop.GetValue(0)}");
+                sb.Append("| ");
             }
             return sb.ToString();
         }
+        public static object StringToObject(string str)
+        {
+            var info = str.Split("|");
+            var classInfo = info[0].Split(":");
+            var t = Type.GetType(classInfo[0]);
+            var values = new Object[4];
+            //var props = t.GetProperties(BindingFlags.Instance | BindingFlags
+            //    .NonPublic | BindingFlags.Public);
+            //int j = 0;
+            //foreach (var prop in props)
+            //{
+            //    var value = values[j];
+            //    var fieldValue = prop.PropertyType.InvokeMember("Parse",
+            //        BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod,
+            //        null, prop, value);
+            //    prop.SetValue(t, (object?)value);
+            //    j++;
+            //}
+            values[0] = Int32.Parse(info[1].Split(":")[1]);
+            values[1] = info[2].Split(":")[1].TrimStart().TrimEnd();
+            values[2] = Decimal.Parse(info[3].Split(":")[1]);
+            string ofChars = info[4].Split(":")[1];
+            int startIndex = ofChars.IndexOf('{') + 2;
+            int endIndex = ofChars.Length - 2;
+            char[] array = ofChars.Substring(startIndex, endIndex - startIndex)
+                .Replace(" ", "").Replace("\'","").ToCharArray();
+            values[3] = array;
+
+            var res = Activator.CreateInstance(t!,values)!;
+            
+            return res;
+        }
         static void Main(string[] args)
         {
-            
+            object obj = new TargetClass(1, "string", 16M, new char[] {'c', 'h', 'a', 'r'});
+            string strOfObj = ObjectToString(obj);
+            Console.WriteLine(strOfObj);
+            obj = (TargetClass)StringToObject(strOfObj);
+            strOfObj = ObjectToString(obj!);
+            Console.WriteLine(strOfObj);
         }
     }
 }

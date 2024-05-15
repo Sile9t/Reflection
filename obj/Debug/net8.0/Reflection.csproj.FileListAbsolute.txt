@@ -1,0 +1,15 @@
+E:\Projects\DotNet\Reflection\bin\Debug\net8.0\Reflection.exe
+E:\Projects\DotNet\Reflection\bin\Debug\net8.0\Reflection.deps.json
+E:\Projects\DotNet\Reflection\bin\Debug\net8.0\Reflection.runtimeconfig.json
+E:\Projects\DotNet\Reflection\bin\Debug\net8.0\Reflection.dll
+E:\Projects\DotNet\Reflection\bin\Debug\net8.0\Reflection.pdb
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.AssemblyInfoInputs.cache
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.AssemblyInfo.cs
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.csproj.CoreCompileInputs.cache
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.sourcelink.json
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.dll
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\refint\Reflection.dll
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.pdb
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\Reflection.genruntimeconfig.cache
+E:\Projects\DotNet\Reflection\obj\Debug\net8.0\ref\Reflection.dll
